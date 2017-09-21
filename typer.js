@@ -300,3 +300,10 @@ function updTimeSpeed() {
     $('#jsSpeed').html(izracunajHitrost(secs).toFixed(2));
     $('#jsAcc').html(izracunajTocnost(fullText, mistakes).toFixed(2));
 }
+
+exports._test = {
+  keyPressed: keyPressed,
+  doStart: doStart,
+  fullText: fullText,
+  ended: ended
+}
