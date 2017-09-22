@@ -213,7 +213,7 @@ function timeDifference(t1, t2) {
 function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime, tattemptid, turl, tshowkeyboard, tcontinuoustype, tcountmistypedspaces) {
     $("#form1").on("keypress", "#tb1", keyPressed);
     showKeyboard = tshowkeyboard;
-    ContinuousType = tcontinuoustype;
+    continuousType = tcontinuoustype;
     countMistypedSpaces = tcountmistypedspaces;
     fullText = ttext;
     appUrl = turl;
