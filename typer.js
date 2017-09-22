@@ -1,20 +1,21 @@
-var startTime,
-    endTime,
-    mistakes,
-    currentPos,
-    started = false,
-    ended = false,
-    currentChar,
-    fullText,
-    intervalID = -1,
-    interval2ID = -1,
-    appUrl,
-    showKeyboard,
-    THE_LAYOUT,
-    continuousType,
-    countMistypedSpaces,
-    keyupCombined,
-    keyupFirst;
+global.startTime;
+global.endTime;
+global.mistakes;
+global.currentPos;
+global.started = false;
+global.ended = false;
+global.currentChar;
+global.fullText;
+global.intervalID = -1;
+global.interval2ID = -1;
+global.appUrl;
+global.showKeyboard;
+global.THE_LAYOUT;
+global.continuousType;
+global.countMistypedSpaces;
+global.keyupCombined;
+global.keyupFirst;
+global.window = global;
 
 function moveCursor(nextPos) {
     if (nextPos > 0 && nextPos <= fullText.length) {
@@ -212,7 +213,7 @@ function timeDifference(t1, t2) {
 function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime, tattemptid, turl, tshowkeyboard, tcontinuoustype, tcountmistypedspaces) {
     $("#form1").on("keypress", "#tb1", keyPressed);
     showKeyboard = tshowkeyboard;
-    continuousType = tcontinuoustype;
+    ContinuousType = tcontinuoustype;
     countMistypedSpaces = tcountmistypedspaces;
     fullText = ttext;
     appUrl = turl;
@@ -301,9 +302,7 @@ function updTimeSpeed() {
     $('#jsAcc').html(izracunajTocnost(fullText, mistakes).toFixed(2));
 }
 
-exports._test = {
-  keyPressed: keyPressed,
-  doStart: doStart,
-  fullText: fullText,
-  ended: ended
-}
+// For test purposes
+exports.keyPressed = keyPressed;
+exports.doStart = doStart;
+exports.moveCursor = moveCursor;
