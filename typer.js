@@ -1,21 +1,17 @@
-global.startTime;
-global.endTime;
-global.mistakes;
-global.currentPos;
-global.started = false;
-global.ended = false;
-global.currentChar;
-global.fullText;
-global.intervalID = -1;
-global.interval2ID = -1;
-global.appUrl;
-global.showKeyboard;
-global.THE_LAYOUT;
-global.continuousType;
-global.countMistypedSpaces;
-global.keyupCombined;
-global.keyupFirst;
-global.window = global;
+var startTime,
+        endTime,
+        mistakes,
+        started = false,
+        ended = false,
+        intervalID = -1,
+        interval2ID = -1,
+        appUrl,
+        showKeyboard,
+        THE_LAYOUT,
+        continuousType,
+        countMistypedSpaces,
+        keyupCombined,
+        keyupFirst;
 
 function moveCursor(nextPos) {
     if (nextPos > 0 && nextPos <= fullText.length) {
@@ -104,15 +100,16 @@ function doStart() {
     mistakes = 0;
     currentPos = 0;
     started = true;
+    console.log("doStart fullText:" + fullText);
     currentChar = fullText[currentPos];
-    intervalID = setInterval('updTimeSpeed()', 1000);
+    intervalID = setInterval(updTimeSpeed, 1000);
     var rpMootyperId = $('input[name="rpSityperId"]').val();
     var rpUser = $('input[name="rpUser"]').val();
     var juri = appUrl + "/mod/mootyper/atchk.php?status=1&mootyperid=" + rpMootyperId + "&userid=" + rpUser + "&time=" + (startTime.getTime() / 1000);
     $.get(juri, function( data ) {
         $('input[name="rpAttId"]').val(data);
     });
-    interval2ID = setInterval('doCheck()', 4000);
+    interval2ID = setInterval(doCheck, 4000);
 }
 
 function keyPressed(e) {
@@ -303,6 +300,39 @@ function updTimeSpeed() {
 }
 
 // For test purposes
-exports.keyPressed = keyPressed;
-exports.doStart = doStart;
-exports.moveCursor = moveCursor;
+if(isNode) {
+    // functions
+    exports.moveCursor = moveCursor;
+    exports.doTheEnd = doTheEnd;
+    exports.getPressedChar = getPressedChar;
+    exports.focusSet = focusSet;
+    exports.doCheck = doCheck;
+    exports.doStart = doStart;
+    exports.keyPressed = keyPressed;
+    exports.dobiSekunde = dobiSekunde;
+    exports.timeDifference = timeDifference;
+    exports.inittexttoenter = inittexttoenter;
+    exports.isDigit = isDigit;
+    exports.izracunajHitrost = izracunajHitrost;
+    exports.izracunajTocnost = izracunajTocnost;
+    exports.updTimeSpeed = updTimeSpeed;
+    
+    // global variables
+    exports.startTime = global.startTime;
+    exports.endTime = global.endTime;
+    exports.mistakes = global.mistakes;
+    exports.currentPos = global.currentPos;
+    exports.started = global.started;
+    exports.ended = global.ended;
+    exports.currentChar = global.currentChar;
+    exports.fullText = global.fullText;
+    exports.intervalID = global.intervalID;
+    exports.interval2ID = global.interval2ID;
+    exports.appUrl = global.appUrl;
+    exports.showKeyboard = global.showKeyboard;
+    exports.THE_LAYOUT = global.THE_LAYOUT;
+    exports.continuousType = global.continuousType;
+    exports.countMistypedSpaces = global.countMistypedSpaces;
+    exports.keyupCombined = global.keyupCombined;
+    exports.keyupFirst = global.keyupFirst;
+}

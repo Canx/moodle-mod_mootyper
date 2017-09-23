@@ -11,6 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.1.2",
+    "detect-node": "^2.0.3",
     "jquery": "^3.2.1",
     "jsdom": "11.2.0",
     "jsdom-global": "3.0.2",
