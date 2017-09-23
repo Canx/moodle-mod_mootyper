@@ -300,7 +300,7 @@ function updTimeSpeed() {
 }
 
 // For test purposes
-if(isNode) {
+if (typeof isNode !== 'undefined' && isNode !== null) {
     // functions
     exports.moveCursor = moveCursor;
     exports.doTheEnd = doTheEnd;

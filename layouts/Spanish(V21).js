@@ -248,7 +248,7 @@ function isLetter(str) {
     return str.length === 1 && str.match(/[a-z¡ñçáéíóúü]/i);
 }
 
-if(isNode) {
+if (typeof isNode !== 'undefined' && isNode !== null) {
     exports.isCombined = isCombined;
     exports.THE_LAYOUT = THE_LAYOUT;
     exports.keyupCombined = keyupCombined;
