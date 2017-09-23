@@ -247,3 +247,5 @@ function getKeyID(t_crka) {
 function isLetter(str) {
     return str.length === 1 && str.match(/[a-z¡ñçáéíóúü]/i);
 }
+
+exports.isCombined = isCombined

@@ -6,26 +6,39 @@ var chai = require("chai");
 var sinonChai = require("sinon-chai");
 
 chai.use(sinonChai);
+
+Layout = require("../layouts/Spanish(V21).js");
+global.isCombined = Layout.isCombined;
+global.THE_LAYOUT = Layout.THE_LAYOUT;
+global.keyupCombined = Layout.keyupCombined;
+global.keyupFirst = Layout.keyupFirst;
+global.keyboardElement = Layout.keyboardElement;
+global.thenFinger = Layout.thenFinger;
+global.getKeyID = Layout.getKeyID;
+global.isLetter = Layout.isLetter;
+global.showKeyboard = Layout.showKeyboard;
+
 Typer = require("../typer.js");
+global.keyPressed = Typer.keyPressed;
+global.doStart = Typer.doStart;
+global.moveCursor = Typer.moveCursor;
+global.mistakes = Typer.mistakes;
+
 
 beforeEach(function() {
-    global.keyPressed = Typer.keyPressed;
-    global.doStart = Typer.doStart;
-    global.moveCursor = Typer.moveCursor;
+    // typer.js initialization
     global.ended = false;
     global.started = true;
     global.currentPos = 0;
-    Typer.fullText = "aeiou";
-    global.fullText = Typer.fullText;
-    global.THE_LAYOUT = "Spanish";
+    global.fullText = "aeiou";
     global.currentChar = fullText.charAt(currentPos);
-    global.mistakes = Typer.mistakes;
     global.continuousType = false;
     global.countMistypedSpaces = false;
     sinon.spy(global.moveCursor);
 });
 
-// results that need to be checked
+// keyPressed side effects that could be tested:
+//
 // return value: true/false <- what's the meaning???
 // call to elemOff.turnOff();
 // call to nextE.turnOn();
@@ -39,12 +52,29 @@ beforeEach(function() {
 // currentPos modified
 
 describe('keyPressed function', function() {
-    it('should increment current position if typed correctly', function() {
-        var moveCursorSpy = sinon.spy(global.moveCursor);
-        e = {keyCode: 65, which: 65, charCode: 0, type: "keyup"};
-        keyPressed(e);
+    before(function () {
+        this.jsdom = require('jsdom-global')()
+	// TODO: add generated html for keyboard before testing modified elements in DOM
+        document.body.innerHTML = '<html><body></body></html>';
+        $ = require("jquery");
+    });
 
-        // TODO: check why spy doesn't work!
-        assert(moveCursorSpy.called);
+    after(function () {
+        this.jsdom()
+    });
+
+    it('should increment current position if typed correctly', function() {
+        var moveCursorSpy = sinon.spy(global, 'moveCursor');
+
+	var akey = [{keyCode: 65, which: 65, charCode: 0, type: "keydown"},
+	            {keyCode: 97, which: 97, charCode: 0, type: "keypress"},
+	            {keyCode: 65, which: 65, charCode: 0, type: "keyup"}];
+
+	akey.forEach(function(e) {
+            keyPressed(e);
+        });
+
+	assert.equal(currentPos, 1);
+        assert.equal(moveCursorSpy.callCount, 1);
   });
 });
