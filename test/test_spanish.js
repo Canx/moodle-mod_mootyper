@@ -11,7 +11,7 @@ chai.use(sinonChai);
 
 
 k = require("./fixtures/spanish.js").keyslinux;
-Layout = require("../layouts/Spanish(V21).js");
+Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
 
@@ -57,7 +57,7 @@ describe('keyPressed function', function() {
     });
 
     it('should load the spanish layout', function() {
-        assert.equal(THE_LAYOUT, "Spanish");	
+        assert.equal(THE_LAYOUT, "Spanish(V3)");	
     });
 
     it('should increment current position if typed correctly', function() {

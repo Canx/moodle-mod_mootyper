@@ -18,9 +18,17 @@ var keyslinux = {
 
     u: [{keyCode: 85, which: 85, charCode: 0, type: "keydown"},
         {keyCode: 117, which: 117, charCode: 117, type: "keypress"},
-        {keyCode: 85, which: 85, charCode: 0, type: "keyup"}]
+        {keyCode: 85, which: 85, charCode: 0, type: "keyup"}],
 
-    // TODO: complete enough keys and combinations
+    á: [{keyCode: 222, which: 222, charCode: 0, type: "keyup"},
+        {keyCode: 229, which: 229, charCode: 0, type: "keydown"},
+        {data: "á", type: "textInput"},
+        {keyCode: 65, which: 65, charCode: 0, type: "keyup"}]
+
+   // TODO: complete enough keys and combinations
 }
 
+var keyswindows = {}
+
 exports.keyslinux = keyslinux;
+exports.keyswindows = keyswindows;

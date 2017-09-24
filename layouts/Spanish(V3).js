@@ -238,3 +238,15 @@ function getKeyID(t_crka) {
 function isLetter(str) {
     return str.length === 1 && str.match(/[a-z¡ñçáéíóúü]/i);
 }
+
+if (typeof isNode !== 'undefined' && isNode !== null) {
+    exports.isCombined = isCombined;
+    exports.THE_LAYOUT = THE_LAYOUT;
+    exports.keyupCombined = keyupCombined;
+    exports.keyupFirst = keyupFirst;
+    exports.keyboardElement = keyboardElement;
+    exports.thenFinger = thenFinger;
+    exports.getKeyID = getKeyID;
+    exports.isLetter = isLetter;
+}
+
