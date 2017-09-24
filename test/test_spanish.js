@@ -69,6 +69,7 @@ describe('keyPressed function', function() {
             keyPressed(e);
         });
 
+	// NOTE: Apparently currentPos doesn't increment in the last character!
 	assert.equal(currentPos, 5);
   });
   
