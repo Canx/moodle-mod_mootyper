@@ -62,7 +62,7 @@ describe('keyPressed function', function() {
 
     it('should increment current position if typed correctly', function() {
 
-	// simulate pressing "a" and "e" keys.
+	// simulate pressing "aeiou" keys in sequence.
         var events = [].concat(k.a, k.e, k.i, k.o, k.u);
 
 	events.forEach(function(e) {
