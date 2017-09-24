@@ -12,6 +12,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "detect-node": "^2.0.3",
+    "fs": "0.0.1-security",
     "jquery": "^3.2.1",
     "jsdom": "11.2.0",
     "jsdom-global": "3.0.2",

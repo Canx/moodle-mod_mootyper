@@ -5,6 +5,7 @@ var assert = require('assert');
 var sinon = require("sinon");
 var chai = require("chai");
 var sinonChai = require("sinon-chai");
+var fs = require("fs");
 
 chai.use(sinonChai);
 
@@ -21,14 +22,13 @@ beforeEach(function() {
     this.jsdom = require('jsdom-global')();
     $ = require("jquery");
 
-    // TODO: add generated html for keyboard before testing modified elements in DOM
-    document.body.innerHTML = '<html><body></body></html>';
+    document.body.innerHTML = fs.readFileSync("test/fixtures/spanish.html");
 
     // initialize global variables
-    global.fullText = "aeiou";
     global.ended = false;
     global.started = false;
     global.currentPos = 0;
+    global.fullText = "aeiou";
     global.currentChar = fullText.charAt(currentPos);
     global.continuousType = false;
     global.countMistypedSpaces = false;
