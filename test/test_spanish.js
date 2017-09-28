@@ -1,11 +1,12 @@
 'use scrict'
 
 global.isNode = require('detect-node');
-var assert = require('assert');
-var sinon = require("sinon");
-var chai = require("chai");
-var sinonChai = require("sinon-chai");
-var fs = require("fs");
+const util = require('util')
+const assert = require('assert');
+const sinon = require("sinon");
+const chai = require("chai");
+const sinonChai = require("sinon-chai");
+const fs = require("fs");
 
 chai.use(sinonChai);
 
@@ -14,25 +15,20 @@ k = require("./fixtures/spanish.js").keyslinux;
 Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
+fixtures = {
+	"aeiou": "test/fixtures/spanish.html"
+};
 
-// TODO: move to helper.js
-globals();
-
-beforeEach(function() {
-    this.jsdom = require('jsdom-global')();
-    $ = require("jquery");
-
-    document.body.innerHTML = fs.readFileSync("test/fixtures/spanish.html");
-
-    // initialize global variables
-    global.ended = false;
-    global.started = false;
-    global.currentPos = 0;
-    global.fullText = "aeiou";
-    global.currentChar = fullText.charAt(currentPos);
-    global.continuousType = false;
+function testconfig(text) {
     global.countMistypedSpaces = false;
-});
+    global.continuousType = false;
+    global.started = false;
+    ended = false;
+    global.currentPos = 0;
+    global.fullText = text;
+    global.currentChar = fullText.charAt(currentPos);
+    document.body.innerHTML = fs.readFileSync(fixtures[text]);
+}
 
 // keyPressed side effects that could be tested:
 //
@@ -47,9 +43,13 @@ beforeEach(function() {
 // jquery calls that modify specific html elements...
 // currentChar modified
 // currentPos modified
+// call to doTheEnd when finished exercise.
 
 describe('keyPressed function', function() {
     before(function () {
+        this.jsdom = require('jsdom-global')();
+        $ = require("jquery");
+        globals();
     });
 
     after(function () {
@@ -60,25 +60,26 @@ describe('keyPressed function', function() {
         assert.equal(THE_LAYOUT, "Spanish(V3)");	
     });
 
-    it('should increment current position if typed correctly', function() {
+    it('should finish exercise if all keys typed correctly', function() {
+        testconfig("aeiou");
 
 	// simulate pressing "aeiou" keys in sequence.
         var events = [].concat(k.a, k.e, k.i, k.o, k.u);
+
+	assert.equal(global.ended, false);
 
 	events.forEach(function(e) {
             keyPressed(e);
         });
 
 	// NOTE: Apparently currentPos doesn't increment in the last character!
-	assert.equal(currentPos, 5);
+	// that's why we check against 4 (5-1) characters
+	assert.equal(currentPos, 4);
+
+	assert.equal(vars.ended, true);
   });
-  
-  // FIX!
-  //it('should call moveCursor if typed correctly', function() {
-        //var moveCursorSpy = sinon.spy(global, 'moveCursor');
-        //assert.equal(moveCursorSpy.callCount, 1);
-  //});
 });
+
 
 
 // global import helper
@@ -94,7 +95,9 @@ function globals() {
     global.showKeyboard = Layout.showKeyboard;
 
     global.moveCursor = Typer.moveCursor;
+    global.ended = Typer.ended;
     global.doTheEnd = Typer.doTheEnd;
+
     global.getPressedChar = Typer.getPressedChar;
     global.focusSet = Typer.focusSet;
     global.doCheck = Typer.doCheck;
@@ -113,7 +116,6 @@ function globals() {
     global.mistakes = Typer.mistakes;
     global.currentPos = Typer.currentPos;
     global.started = Typer.started;
-    global.ended = Typer.ended;
     global.currentChar = Typer.currentChar;
     global.fullText = Typer.fullText;
     global.intervalID = Typer.intervalID;
@@ -125,4 +127,6 @@ function globals() {
     global.countMistypedSpaces = Typer.countMistypedSpaces;
     global.keyupCombined = Typer.keyupCombined;
     global.keyupFirst = Typer.keyupFirst;
+
+    global.vars = Typer.vars;
 }

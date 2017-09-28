@@ -5,7 +5,7 @@ function isCombined(chr) {
 THE_LAYOUT = 'Spanish(V3)';
 
 function keyupCombined(e) {
-    if (ended) {
+    if (globals.ended) {
         return false;
     }
     if (!started) {

@@ -2,7 +2,6 @@ var startTime,
         endTime,
         mistakes,
         started = false,
-        ended = false,
         intervalID = -1,
         interval2ID = -1,
         appUrl,
@@ -12,6 +11,10 @@ var startTime,
         countMistypedSpaces,
         keyupCombined,
         keyupFirst;
+
+vars = {
+	ended: false
+}
 
 function moveCursor(nextPos) {
     if (nextPos > 0 && nextPos <= fullText.length) {
@@ -29,7 +32,7 @@ function doTheEnd() {
     $('#crka' + (fullText.length - 1)).addClass('txtGreen');
     $('#crka' + (fullText.length - 1)).removeClass('txtBlue');
     $('#crka' + (fullText.length - 1)).removeClass('txtRed');
-    ended = true;
+    vars.ended = true;
     clearInterval(intervalID);
     clearInterval(interval2ID);
     endTime = new Date();
@@ -100,7 +103,6 @@ function doStart() {
     mistakes = 0;
     currentPos = 0;
     started = true;
-    console.log("doStart fullText:" + fullText);
     currentChar = fullText[currentPos];
     intervalID = setInterval(updTimeSpeed, 1000);
     var rpMootyperId = $('input[name="rpSityperId"]').val();
@@ -113,7 +115,7 @@ function doStart() {
 }
 
 function keyPressed(e) {
-    if (ended) {
+    if (vars.ended) {
         return false;
     }
     if (!started) {
@@ -323,7 +325,6 @@ if (typeof isNode !== 'undefined' && isNode !== null) {
     exports.mistakes = global.mistakes;
     exports.currentPos = global.currentPos;
     exports.started = global.started;
-    exports.ended = global.ended;
     exports.currentChar = global.currentChar;
     exports.fullText = global.fullText;
     exports.intervalID = global.intervalID;
@@ -335,4 +336,6 @@ if (typeof isNode !== 'undefined' && isNode !== null) {
     exports.countMistypedSpaces = global.countMistypedSpaces;
     exports.keyupCombined = global.keyupCombined;
     exports.keyupFirst = global.keyupFirst;
+
+    exports.vars = vars;
 }
