@@ -8,7 +8,7 @@ function keyupCombined(e) {
     if (Typer.ended) {
         return false;
     }
-    if (!started) {
+    if (!Typer.started) {
         doStart();
     }
     var keychar = getPressedChar(e);

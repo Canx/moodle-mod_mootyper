@@ -9,7 +9,7 @@ function keyupCombined(e) {
     if (ended) {
         return false;
     }
-    if (!started) {
+    if (!Typer.started) {
         doStart();
     }
     var keychar = getPressedChar(e);

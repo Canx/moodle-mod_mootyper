@@ -22,7 +22,7 @@ fixtures = {
 function testconfig(text) {
     global.countMistypedSpaces = false;
     global.continuousType = false;
-    global.started = false;
+    global.Typer.started = false;
     global.Typer.ended = false;
     global.currentPos = 0;
     global.fullText = text;
@@ -92,7 +92,7 @@ function globals() {
     global.thenFinger = Layout.thenFinger;
     global.getKeyID = Layout.getKeyID;
     global.isLetter = Layout.isLetter;
-    global.showKeyboard = Layout.showKeyboard;
+    //global.Typer.showKeyboard = Layout.showKeyboard;
 
     global.moveCursor = Typer.moveCursor;
     //global.ended = Typer.Typer.ended;
@@ -111,17 +111,10 @@ function globals() {
     global.izracunajTocnost = Typer.izracunajTocnost;
     global.updTimeSpeed = Typer.updTimeSpeed;
 
-    global.startTime = Typer.startTime;
-    global.endTime = Typer.endTime;
-    global.mistakes = Typer.mistakes;
     global.currentPos = Typer.currentPos;
-    global.started = Typer.started;
     global.currentChar = Typer.currentChar;
     global.fullText = Typer.fullText;
-    global.intervalID = Typer.intervalID;
-    global.interval2ID = Typer.interval2ID;
-    global.appUrl = Typer.appUrl;
-    global.showKeyboard = Typer.showKeyboard;
+    //global.showKeyboard = Typer.showKeyboard;
     global.THE_LAYOUT = Typer.THE_LAYOUT;
     global.continuousType = Typer.continuousType;
     global.countMistypedSpaces = Typer.countMistypedSpaces;
