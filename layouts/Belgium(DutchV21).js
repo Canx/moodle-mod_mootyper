@@ -5,7 +5,7 @@ function isCombined(chr) {
 THE_LAYOUT = 'Belgium(DutchV2.1)';
 
 function keyupCombined(e) {
-    if (ended) {
+    if (Typer.ended) {
         return false;
     }
     if (!started) {

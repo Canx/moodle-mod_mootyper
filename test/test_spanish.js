@@ -23,7 +23,7 @@ function testconfig(text) {
     global.countMistypedSpaces = false;
     global.continuousType = false;
     global.started = false;
-    ended = false;
+    global.Typer.ended = false;
     global.currentPos = 0;
     global.fullText = text;
     global.currentChar = fullText.charAt(currentPos);
@@ -66,7 +66,7 @@ describe('keyPressed function', function() {
 	// simulate pressing "aeiou" keys in sequence.
         var events = [].concat(k.a, k.e, k.i, k.o, k.u);
 
-	assert.equal(global.ended, false);
+	assert.equal(Typer.ended, false);
 
 	events.forEach(function(e) {
             keyPressed(e);
@@ -76,7 +76,7 @@ describe('keyPressed function', function() {
 	// that's why we check against 4 (5-1) characters
 	assert.equal(currentPos, 4);
 
-	assert.equal(vars.ended, true);
+	assert.equal(Typer.ended, true);
   });
 });
 
@@ -95,7 +95,7 @@ function globals() {
     global.showKeyboard = Layout.showKeyboard;
 
     global.moveCursor = Typer.moveCursor;
-    global.ended = Typer.ended;
+    //global.ended = Typer.Typer.ended;
     global.doTheEnd = Typer.doTheEnd;
 
     global.getPressedChar = Typer.getPressedChar;
@@ -128,5 +128,5 @@ function globals() {
     global.keyupCombined = Typer.keyupCombined;
     global.keyupFirst = Typer.keyupFirst;
 
-    global.vars = Typer.vars;
+    global.Typer = Typer.Typer;
 }

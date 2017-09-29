@@ -92,7 +92,7 @@ function isCombined(chr) {
 }
 
 function keyupCombined(e) {
-    if (ended) {
+    if (Typer.ended) {
         return false;
     }
     if (!started) {

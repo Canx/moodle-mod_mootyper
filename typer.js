@@ -12,7 +12,7 @@ var startTime,
         keyupCombined,
         keyupFirst;
 
-vars = {
+Typer = {
 	ended: false
 }
 
@@ -32,7 +32,7 @@ function doTheEnd() {
     $('#crka' + (fullText.length - 1)).addClass('txtGreen');
     $('#crka' + (fullText.length - 1)).removeClass('txtBlue');
     $('#crka' + (fullText.length - 1)).removeClass('txtRed');
-    vars.ended = true;
+    Typer.ended = true;
     clearInterval(intervalID);
     clearInterval(interval2ID);
     endTime = new Date();
@@ -115,7 +115,7 @@ function doStart() {
 }
 
 function keyPressed(e) {
-    if (vars.ended) {
+    if (Typer.ended) {
         return false;
     }
     if (!started) {
@@ -300,7 +300,7 @@ function updTimeSpeed() {
     $('#jsSpeed').html(izracunajHitrost(secs).toFixed(2));
     $('#jsAcc').html(izracunajTocnost(fullText, mistakes).toFixed(2));
 }
-
+   
 // For test purposes
 if (typeof isNode !== 'undefined' && isNode !== null) {
     // functions
@@ -337,5 +337,5 @@ if (typeof isNode !== 'undefined' && isNode !== null) {
     exports.keyupCombined = global.keyupCombined;
     exports.keyupFirst = global.keyupFirst;
 
-    exports.vars = vars;
+    exports.Typer = Typer;
 }
