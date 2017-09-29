@@ -1,5 +1,11 @@
-var THE_LAYOUT, continuousType, countMistypedSpaces, keyupCombined, keyupFirst;
+// keyupCombined and keyupFirst functions are defined in specific layouts.
+// TODO: create an abstract layout class and make real layouts inherit from it.
+var keyupCombined, keyupFirst;
 
+// TODO: Layout is defined in layout files. This should be defined in the Typer object in the future.
+var THE_LAYOUT;
+
+// TODO: this Typer object should contain below functions as methods.
 Typer = {
 	startTime : null,
 	endTime : null,
@@ -9,7 +15,9 @@ Typer = {
 	intervalID: -1,
 	interval2ID: -1,
 	appUrl: null,
-	showKeyboard: null
+	showKeyboard: null,
+	continuousType: false,
+	countMistypedSpaces: false,
 }
 
 function moveCursor(nextPos) {
@@ -160,7 +168,7 @@ function keyPressed(e) {
 		currentChar = fullText[currentPos + 1];
 		currentPos++;
 		return true;
-	} else if (keychar === ' ' && !countMistypedSpaces) { // Ignore mistyped
+	} else if (keychar === ' ' && !Typer.countMistypedSpaces) { // Ignore mistyped
 		// extra spaces
 		// unless set to
 		// count them.
@@ -168,8 +176,8 @@ function keyPressed(e) {
 	} else {
 		Typer.mistakes++; // Typed the wrong letter so increment mistake
 							// count.
-		if ((!continuousType && !countMistypedSpaces)
-				|| (!continuousType && countMistypedSpaces)) { // If
+		if ((!Typer.continuousType && !Typer.countMistypedSpaces)
+				|| (!Typer.continuousType && Typer.countMistypedSpaces)) { // If
 			// not
 			// set
 			// for
@@ -240,8 +248,8 @@ function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 		tattemptid, turl, tshowkeyboard, tcontinuoustype, tcountmistypedspaces) {
 	$("#form1").on("keypress", "#tb1", keyPressed);
 	showKeyboard = tshowkeyboard;
-	continuousType = tcontinuoustype;
-	countMistypedSpaces = tcountmistypedspaces;
+	Typer.continuousType = tcontinuoustype;
+	Typer.countMistypedSpaces = tcountmistypedspaces;
 	fullText = ttext;
 	Typer.appUrl = turl;
 	var tempStr = "";
@@ -257,7 +265,7 @@ function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 			nextE.turnOn();
 			if (isCombined(currentChar)) {
 				$("#form1").off("keypress", "#tb1", keyPressed);
-				$("#form1").on("keyup", "#tb1", keyupCombined);
+				$("#form1").on("keyup", "#tb1", Typer.keyupCombined);
 			}
 		}
 		Typer.started = true;
@@ -293,7 +301,7 @@ function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 						+ "</span>";
 				if (isCombined(tChar)) {
 					$("#form1").off("keypress", "#tb1", keyPressed);
-					$("#form1").on("keyup", "#tb1", keyupCombined);
+					$("#form1").on("keyup", "#tb1", Typer.keyupCombined);
 				}
 			} else if (tChar === '\n') {
 				tempStr += "<span id='crka" + i
@@ -361,9 +369,6 @@ if (typeof isNode !== 'undefined' && isNode !== null) {
 	exports.currentPos = global.currentPos;
 	exports.currentChar = global.currentChar;
 	exports.fullText = global.fullText;
-	exports.THE_LAYOUT = global.THE_LAYOUT;
-	exports.continuousType = global.continuousType;
-	exports.countMistypedSpaces = global.countMistypedSpaces;
 	exports.keyupCombined = global.keyupCombined;
 	exports.keyupFirst = global.keyupFirst;
 

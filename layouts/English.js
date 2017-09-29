@@ -1,5 +1,3 @@
-var THE_LAYOUT;
-
 function isCombined(chr) {
     return false;
 }

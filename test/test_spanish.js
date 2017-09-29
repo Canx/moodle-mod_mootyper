@@ -57,7 +57,7 @@ describe('keyPressed function', function() {
     });
 
     it('should load the spanish layout', function() {
-        assert.equal(THE_LAYOUT, "Spanish(V3)");	
+        assert.equal(Typer.THE_LAYOUT, "Spanish(V3)");	
     });
 
     it('should finish exercise if all keys typed correctly', function() {
@@ -85,19 +85,15 @@ describe('keyPressed function', function() {
 // global import helper
 function globals() {
     global.isCombined = Layout.isCombined;
-    global.THE_LAYOUT = Layout.THE_LAYOUT;
     global.keyupCombined = Layout.keyupCombined;
     global.keyupFirst = Layout.keyupFirst;
     global.keyboardElement = Layout.keyboardElement;
     global.thenFinger = Layout.thenFinger;
     global.getKeyID = Layout.getKeyID;
     global.isLetter = Layout.isLetter;
-    //global.Typer.showKeyboard = Layout.showKeyboard;
 
     global.moveCursor = Typer.moveCursor;
-    //global.ended = Typer.Typer.ended;
     global.doTheEnd = Typer.doTheEnd;
-
     global.getPressedChar = Typer.getPressedChar;
     global.focusSet = Typer.focusSet;
     global.doCheck = Typer.doCheck;
@@ -114,12 +110,11 @@ function globals() {
     global.currentPos = Typer.currentPos;
     global.currentChar = Typer.currentChar;
     global.fullText = Typer.fullText;
-    //global.showKeyboard = Typer.showKeyboard;
-    global.THE_LAYOUT = Typer.THE_LAYOUT;
     global.continuousType = Typer.continuousType;
     global.countMistypedSpaces = Typer.countMistypedSpaces;
     global.keyupCombined = Typer.keyupCombined;
     global.keyupFirst = Typer.keyupFirst;
 
     global.Typer = Typer.Typer;
+    global.Typer.THE_LAYOUT = Layout.THE_LAYOUT;
 }

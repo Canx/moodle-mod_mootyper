@@ -62,7 +62,7 @@ function keyupFirst(event) {
     return false;
 }
 
-THE_LAYOUT = 'Spanish';
+THE_LAYOUT = 'Spanish'; // This is odd...
 
 function keyboardElement(ltr) {
     this.chr = ltr.toLowerCase();
