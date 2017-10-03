@@ -25,8 +25,8 @@ function testconfig(text) {
     global.Typer.started = false;
     global.Typer.ended = false;
     global.currentPos = 0;
-    global.fullText = text;
-    global.currentChar = fullText.charAt(currentPos);
+    global.Typer.fullText = text;
+    global.Typer.currentChar = Typer.fullText.charAt(currentPos);
     document.body.innerHTML = fs.readFileSync(fixtures[text]);
 }
 
@@ -74,7 +74,7 @@ describe('keyPressed function', function() {
 
 	// NOTE: Apparently currentPos doesn't increment in the last character!
 	// that's why we check against 4 (5-1) characters
-	assert.equal(currentPos, 4);
+	assert.equal(Typer.currentPos, 4);
 
 	assert.equal(Typer.ended, true);
   });
@@ -106,12 +106,8 @@ function globals() {
     global.izracunajHitrost = Typer.izracunajHitrost;
     global.izracunajTocnost = Typer.izracunajTocnost;
     global.updTimeSpeed = Typer.updTimeSpeed;
-
-    global.currentPos = Typer.currentPos;
-    global.currentChar = Typer.currentChar;
-    global.fullText = Typer.fullText;
-    global.continuousType = Typer.continuousType;
-    global.countMistypedSpaces = Typer.countMistypedSpaces;
+    
+    // layout functions
     global.keyupCombined = Typer.keyupCombined;
     global.keyupFirst = Typer.keyupFirst;
 

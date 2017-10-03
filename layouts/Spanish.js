@@ -20,17 +20,17 @@ function keyupCombined(e) {
     }
     var currentText = $('#tb1').val();
     var lastChar = currentText.substring(currentText.length - 1);
-    if (combinedChar && lastChar === currentChar) {
+    if (combinedChar && lastChar === Typer.currentChar) {
         if (show_keyboard){
-            var thisE = new keyboardElement(currentChar);
+            var thisE = new keyboardElement(Typer.currentChar);
             thisE.turnOff();
         }
-        if (currentPos === fullText.length - 1) {   // END.
+        if (Typer.currentPos === Typer.fullText.length - 1) {   // END.
             doTheEnd();
             return true;
         }
-        if (currentPos < fullText.length - 1){
-            var nextChar = fullText[currentPos + 1];
+        if (Typer.currentPos < Typer.fullText.length - 1){
+            var nextChar = Typer.fullText[Typer.currentPos + 1];
             if (show_keyboard){
                 var nextE = new keyboardElement(nextChar);
                 nextE.turnOn();
@@ -41,15 +41,15 @@ function keyupCombined(e) {
             }
         }
         combinedChar = false;
-        moveCursor(currentPos + 1);
-        currentChar = fullText[currentPos + 1];
-        currentPos++;
+        moveCursor(Typer.currentPos + 1);
+        Typer.currentChar = Typer.fullText[Typer.currentPos + 1];
+        Typer.currentPos++;
         return true;
     } else {
         combinedChar = false;
         napake++;
         var tbval = $('#tb1').val();
-        $('#tb1').val(tbval.substring(0, currentPos));
+        $('#tb1').val(tbval.substring(0, Typer.currentPos));
         return false;
     }
 }

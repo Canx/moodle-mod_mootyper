@@ -113,17 +113,17 @@ function keyupCombined(e) {
     }
     var currentText = $('#tb1').val();
     var lastChar = currentText.substring(currentText.length - 1);
-    if (combinedChar && lastChar === currentChar) {
+    if (combinedChar && lastChar === Typer.currentChar) {
         if (show_keyboard){
-            var thisE = new keyboardElement(currentChar);
+            var thisE = new keyboardElement(Typer.currentChar);
             thisE.turnOff();
         }
-        if (currentPos === fullText.length - 1) {   // END.
+        if (currentPos === Typer.fullText.length - 1) {   // END.
             doKonec();
             return true;
         }
-        if (currentPos < fullText.length - 1){
-            var nextChar = fullText[currentPos + 1];
+        if (currentPos < Typer.fullText.length - 1){
+            var nextChar = Typer.fullText[currentPos + 1];
             if (show_keyboard) {
                 var nextE = new keyboardElement(nextChar);
                 nextE.turnOn();
@@ -135,7 +135,7 @@ function keyupCombined(e) {
         }
         combinedChar = false;
         moveCursor(currentPos + 1);
-        currentChar = fullText[currentPos + 1];
+        Typer.currentChar = Typer.fullText[currentPos + 1];
         currentPos++;
         return true;
     }

@@ -18,24 +18,27 @@ Typer = {
 	showKeyboard: null,
 	continuousType: false,
 	countMistypedSpaces: false,
+	currentPos: 0,
+	currentChar: null,
+	fullText: null
 }
 
 function moveCursor(nextPos) {
-	if (nextPos > 0 && nextPos <= fullText.length) {
+	if (nextPos > 0 && nextPos <= Typer.fullText.length) {
 		$('#crka' + (nextPos - 1)).addClass('txtGreen');
 		$('#crka' + (nextPos - 1)).removeClass('txtBlue');
 		$('#crka' + (nextPos - 1)).removeClass('txtRed');
 	}
-	if (nextPos < fullText.length) {
+	if (nextPos < Typer.fullText.length) {
 		$('#crka' + nextPos).addClass('txtBlue');
 	}
 }
 
 // End of typing.
 function doTheEnd() {
-	$('#crka' + (fullText.length - 1)).addClass('txtGreen');
-	$('#crka' + (fullText.length - 1)).removeClass('txtBlue');
-	$('#crka' + (fullText.length - 1)).removeClass('txtRed');
+	$('#crka' + (Typer.fullText.length - 1)).addClass('txtGreen');
+	$('#crka' + (Typer.fullText.length - 1)).removeClass('txtBlue');
+	$('#crka' + (Typer.fullText.length - 1)).removeClass('txtRed');
 	Typer.ended = true;
 	clearInterval(Typer.intervalID);
 	clearInterval(Typer.interval2ID);
@@ -45,12 +48,12 @@ function doTheEnd() {
 	var mins = differenceT.getMinutes();
 	var secs = differenceT.getSeconds();
 	var samoSekunde = dobiSekunde(hours, mins, secs);
-	$('input[name="rpFullHits"]').val((fullText.length + Typer.mistakes));
+	$('input[name="rpFullHits"]').val((Typer.fullText.length + Typer.mistakes));
 	$('input[name="rpTimeInput"]').val(samoSekunde);
 	$('input[name="rpMistakesInput"]').val(Typer.mistakes);
 	var speed = izracunajHitrost(samoSekunde);
 	$('input[name="rpAccInput"]').val(
-			izracunajTocnost(fullText, Typer.mistakes).toFixed(2));
+			izracunajTocnost(Typer.fullText, Typer.mistakes).toFixed(2));
 	$('input[name="rpSpeedInput"]').val(speed);
 	$('#tb1').attr('disabled', 'disabled');
 	$('#btnContinue').css('visibility', 'visible');
@@ -88,12 +91,12 @@ function focusSet(e) {
 	if (!Typer.started) {
 		$('#tb1').val('');
 		if (Typer.showKeyboard) {
-			var thisEl = new keyboardElement(fullText[0]);
+			var thisEl = new keyboardElement(Typer.fullText[0]);
 			thisEl.turnOn();
 		}
 		return true;
 	} else {
-		$('#tb1').val(fullText.substring(0, currentPos));
+		$('#tb1').val(Typer.fullText.substring(0, Typer.currentPos));
 		return true;
 	}
 }
@@ -104,7 +107,7 @@ function doCheck() {
 	var rpAttId = $('input[name="rpAttId"]').val();
 	var juri = Typer.appUrl + "/mod/mootyper/atchk.php?status=2&attemptid=" + rpAttId
 			+ "&mistakes=" + Typer.mistakes + "&hits="
-			+ (currentPos + Typer.mistakes);
+			+ (Typer.currentPos + Typer.mistakes);
 	$.get(juri, function(data) {
 	});
 }
@@ -112,9 +115,9 @@ function doCheck() {
 function doStart() {
 	Typer.startTime = new Date();
 	Typer.mistakes = 0;
-	currentPos = 0;
+	Typer.currentPos = 0;
 	Typer.started = true;
-	currentChar = fullText[currentPos];
+	Typer.currentChar = Typer.fullText[Typer.currentPos];
 	Typer.intervalID = setInterval(updTimeSpeed, 1000);
 	var rpMootyperId = $('input[name="rpSityperId"]').val();
 	var rpUser = $('input[name="rpUser"]').val();
@@ -135,21 +138,21 @@ function keyPressed(e) {
 		doStart();
 	}
 	var keychar = getPressedChar(e);
-	if (keychar === currentChar
-			|| ((currentChar === '\n' || currentChar === '\r\n'
-					|| currentChar === '\n\r' || currentChar === '\r') && (keychar === ' '))) {
-		if (currentPos === fullText.length - 1) { // END.
-			$('#tb1').val($('#tb1').val() + currentChar);
-			var elemOff = new keyboardElement(currentChar);
+	if (keychar === Typer.currentChar
+			|| ((Typer.currentChar === '\n' || Typer.currentChar === '\r\n'
+					|| Typer.currentChar === '\n\r' || Typer.currentChar === '\r') && (keychar === ' '))) {
+		if (Typer.currentPos === Typer.fullText.length - 1) { // END.
+			$('#tb1').val($('#tb1').val() + Typer.currentChar);
+			var elemOff = new keyboardElement(Typer.currentChar);
 			elemOff.turnOff();
 			doTheEnd();
 			return true;
 		}
 
-		if (currentPos < fullText.length - 1) {
-			var nextChar = fullText[currentPos + 1];
+		if (Typer.currentPos < Typer.fullText.length - 1) {
+			var nextChar = Typer.fullText[Typer.currentPos + 1];
 			if (Typer.showKeyboard) {
-				var thisE = new keyboardElement(currentChar);
+				var thisE = new keyboardElement(Typer.currentChar);
 				thisE.turnOff();
 				if (isCombined(nextChar)
 						&& (thisE.shift || thisE.alt || thisE.pow
@@ -164,9 +167,9 @@ function keyPressed(e) {
 				$("#form1").on("keyup", "#tb1", keyupFirst);
 			}
 		}
-		moveCursor(currentPos + 1);
-		currentChar = fullText[currentPos + 1];
-		currentPos++;
+		moveCursor(Typer.currentPos + 1);
+		Typer.currentChar = Typer.fullText[Typer.currentPos + 1];
+		Typer.currentPos++;
 		return true;
 	} else if (keychar === ' ' && !Typer.countMistypedSpaces) { // Ignore mistyped
 		// extra spaces
@@ -188,12 +191,12 @@ function keyPressed(e) {
 			// correct
 			// letter.
 			return false;
-		} else if (currentPos < fullText.length - 1) { // If continuous typing,
+		} else if (Typer.currentPos < Typer.fullText.length - 1) { // If continuous typing,
 			// show wrong letter and
 			// move on.
-			var nextChar = fullText[currentPos + 1];
+			var nextChar = Typer.fullText[Typer.currentPos + 1];
 			if (Typer.showKeyboard) {
-				var thisE = new keyboardElement(currentChar);
+				var thisE = new keyboardElement(Typer.currentChar);
 				thisE.turnOff();
 				if (isCombined(nextChar)
 						&& (thisE.shift || thisE.alt || thisE.pow
@@ -208,9 +211,9 @@ function keyPressed(e) {
 				$("#form1").on("keyup", "#tb1", keyupFirst);
 			}
 		}
-		moveCursor(currentPos + 1);
-		currentChar = fullText[currentPos + 1];
-		currentPos++;
+		moveCursor(Typer.currentPos + 1);
+		Typer.currentChar = Typer.fullText[Typer.currentPos + 1];
+		Typer.currentPos++;
 		return true;
 	}
 }
@@ -250,20 +253,20 @@ function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 	showKeyboard = tshowkeyboard;
 	Typer.continuousType = tcontinuoustype;
 	Typer.countMistypedSpaces = tcountmistypedspaces;
-	fullText = ttext;
+	Typer.fullText = ttext;
 	Typer.appUrl = turl;
 	var tempStr = "";
 	if (tinprogress) {
 		$('input[name="rpAttId"]').val(tattemptid);
 		Typer.startTime = new Date(tstarttime * 1000);
 		Typer.mistakes = tmistakes;
-		currentPos = (thits - tmistakes);
-		currentChar = fullText[currentPos]; // Current character (trenutni =
+		Typer.currentPos = (thits - tmistakes);
+		Typer.currentChar = Typer.fullText[Typer.currentPos]; // Current character (trenutni =
 		// current).
 		if (Typer.showKeyboard) {
-			var nextE = new keyboardElement(currentChar);
+			var nextE = new keyboardElement(Typer.currentChar);
 			nextE.turnOn();
-			if (isCombined(currentChar)) {
+			if (isCombined(Typer.currentChar)) {
 				$("#form1").off("keypress", "#tb1", keyPressed);
 				$("#form1").on("keyup", "#tb1", Typer.keyupCombined);
 			}
@@ -271,7 +274,7 @@ function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 		Typer.started = true;
 		Typer.intervalID = setInterval('updTimeSpeed()', 1000);
 		Typer.interval2ID = setInterval('doCheck()', 3000);
-		for (var i = 0; i < currentPos; i++) {
+		for (var i = 0; i < Typer.currentPos; i++) {
 			var tChar = ttext[i];
 			if (tChar === '\n') {
 				tempStr += "<span id='crka" + i
@@ -281,9 +284,9 @@ function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 						+ "</span>";
 			}
 		}
-		tempStr += "<span id='crka" + currentPos + "' class='txtBlue'>"
-				+ currentChar + "</span>";
-		for (var j = currentPos + 1; j < ttext.length; j++) {
+		tempStr += "<span id='crka" + Typer.currentPos + "' class='txtBlue'>"
+				+ Typer.currentChar + "</span>";
+		for (var j = Typer.currentPos + 1; j < ttext.length; j++) {
 			var tChar = ttext[j];
 			if (tChar === '\n') {
 				tempStr += "<span id='crka" + j
@@ -324,14 +327,14 @@ function isDigit(aChar) {
 }
 
 function izracunajHitrost(sc) {
-	return (((currentPos + Typer.mistakes) * 60) / sc);
+	return (((Typer.currentPos + Typer.mistakes) * 60) / sc);
 }
 
 function izracunajTocnost() {
-	if (currentPos + Typer.mistakes === 0) {
+	if (Typer.currentPos + Typer.mistakes === 0) {
 		return 0;
 	}
-	return ((currentPos * 100) / (currentPos + Typer.mistakes));
+	return ((Typer.currentPos * 100) / (Typer.currentPos + Typer.mistakes));
 }
 
 function updTimeSpeed() {
@@ -342,9 +345,9 @@ function updTimeSpeed() {
 	$('#jsTime').html(secs);
 
 	$('#jsMistakes').html(Typer.mistakes);
-	$('#jsProgress').html(currentPos + "/" + fullText.length);
+	$('#jsProgress').html(Typer.currentPos + "/" + Typer.fullText.length);
 	$('#jsSpeed').html(izracunajHitrost(secs).toFixed(2));
-	$('#jsAcc').html(izracunajTocnost(fullText, Typer.mistakes).toFixed(2));
+	$('#jsAcc').html(izracunajTocnost(Typer.fullText, Typer.mistakes).toFixed(2));
 }
 
 // For test purposes
@@ -364,13 +367,6 @@ if (typeof isNode !== 'undefined' && isNode !== null) {
 	exports.izracunajHitrost = izracunajHitrost;
 	exports.izracunajTocnost = izracunajTocnost;
 	exports.updTimeSpeed = updTimeSpeed;
-
-	// global variables
-	exports.currentPos = global.currentPos;
-	exports.currentChar = global.currentChar;
-	exports.fullText = global.fullText;
-	exports.keyupCombined = global.keyupCombined;
-	exports.keyupFirst = global.keyupFirst;
 
 	exports.Typer = Typer;
 }
