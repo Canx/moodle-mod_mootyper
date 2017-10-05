@@ -1,4 +1,4 @@
-'use scrict'
+'use scrict';
 
 global.isNode = require('detect-node');
 const util = require('util')
@@ -10,7 +10,9 @@ const fs = require("fs");
 
 chai.use(sinonChai);
 
-k = require("./fixtures/spanish.js").keyslinux;
+Spanish = require("./fixtures/spanish.js");
+k = Spanish.keyslinux;
+
 Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
@@ -18,7 +20,7 @@ fixtures = {
     "aeiou" : "test/fixtures/spanish.html"
 };
 
-function testconfig(text) {
+function testConfig(text) {
     global.countMistypedSpaces = false;
     global.continuousType = false;
     global.Typer.started = false;
@@ -27,6 +29,7 @@ function testconfig(text) {
     global.Typer.fullText = text;
     global.Typer.currentChar = Typer.fullText.charAt(currentPos);
     document.body.innerHTML = fs.readFileSync(fixtures[text]);
+    global.focusSet();
 }
 
 // keyPressed side effects that could be tested:
@@ -44,14 +47,14 @@ function testconfig(text) {
 // currentPos modified
 // call to doTheEnd when finished exercise.
 
-class Keyboard {
-    constructor(keymap, document) {
+class KeyboardTester {
+    constructor(keymap, $) {
         this.keymap = keymap;
         this.keysPressed = new Set();
-        this.document = document;
+        this.$ = $;
     }
     
-    function update(e) {
+    update(e) {
         if (e.type == "keydown") {
             this.keysPressed.add(e.keyCode);
         }
@@ -61,17 +64,22 @@ class Keyboard {
     }
     
     // check that keys pressed are highlighted in the html document correctly
-    function test() {
-        keysPressed.forEach(function(keyCode) {
-            assert.isTrue(this.testKey(keyCode, "next1");
-        }
-        //this.document.getElementById('jkeyshiftd').className
+    testHighlight() {
+        var self = this;
+        this.keysPressed.forEach(function(keyCode) {
+            self.testKeyHighlighted(keyCode);
+        });
     }
     
-    // returns true if key is highlighted
-    function testKey(keyCode, htmlClass) {
-        if (this.document.getElementById(keymap()))
+    // returns true if key is next key highlighted
+    testKeyHighlighted(keyCode) {
+        var key = this.keymap[keyCode];
+        var htmlElement = this.$("#" + key.name).get(0);
+        var nextClass = "next" + key.finger;
+        var msg = "key " + key.name + "("+ keyCode + ") is class:" + htmlElement.className + ", not class:" + nextClass;
+        assert.ok(htmlElement.className == nextClass, msg);
     }
+}
     
 
 
@@ -79,7 +87,6 @@ describe('keyPressed function', function() {
     before(function() {
         this.jsdom = require('jsdom-global')();
         $ = require("jquery");
-        this.keyboard = new Keyboard(Typer.THE_LAYOUT, $);
         globals();
     });
 
@@ -91,8 +98,9 @@ describe('keyPressed function', function() {
         assert.equal(Typer.THE_LAYOUT, "Spanish(V3)");
     });
 
-    it('should finish exercise if all keys typed correctly', function() {
-        testconfig("aeiou");
+    it('should check exercise \'aeiou\'', function() {
+        testConfig("aeiou");
+        var keyboard = new KeyboardTester(Spanish.keymap, $);
 
         // simulate pressing "aeiou" keys in sequence.
         var events = [].concat(k.a, k.e, k.i, k.o, k.u);
@@ -101,8 +109,8 @@ describe('keyPressed function', function() {
 
         events.forEach(function(e) {
             keyboard.update(e);
-            keyboard.test();
-         // TODO: check that the next key is colored correctly.
+            keyboard.testHighlight();
+         // check that the next key is colored correctly.
             keyPressed(e);
         });
 
