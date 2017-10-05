@@ -32,21 +32,7 @@ function testConfig(text) {
     global.focusSet();
 }
 
-// keyPressed side effects that could be tested:
-//
-// return value: true/false <- what's the meaning???
-// call to elemOff.turnOff();
-// call to nextE.turnOn();
-// combinedCharWait modified.
-// call to thisE.turnOff();
-// call to thisE.turnOn();
-// call to moveCursor();
-// mistakes modified
-// jquery calls that modify specific html elements...
-// currentChar modified
-// currentPos modified
-// call to doTheEnd when finished exercise.
-
+// class used to test DOM keyboard status
 class KeyboardTester {
     constructor(keymap, $) {
         this.keymap = keymap;
@@ -80,8 +66,6 @@ class KeyboardTester {
         assert.ok(htmlElement.className == nextClass, msg);
     }
 }
-    
-
 
 describe('keyPressed function', function() {
     before(function() {
@@ -108,9 +92,10 @@ describe('keyPressed function', function() {
         assert.equal(Typer.ended, false);
 
         events.forEach(function(e) {
+            // check that next keys are colored correctly before keyPressed
             keyboard.update(e);
             keyboard.testHighlight();
-         // check that the next key is colored correctly.
+
             keyPressed(e);
         });
 
