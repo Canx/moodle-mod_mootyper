@@ -10,13 +10,12 @@ const fs = require("fs");
 
 chai.use(sinonChai);
 
-
 k = require("./fixtures/spanish.js").keyslinux;
 Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
 fixtures = {
-	"aeiou": "test/fixtures/spanish.html"
+    "aeiou" : "test/fixtures/spanish.html"
 };
 
 function testconfig(text) {
@@ -45,42 +44,75 @@ function testconfig(text) {
 // currentPos modified
 // call to doTheEnd when finished exercise.
 
+class Keyboard {
+    constructor(keymap, document) {
+        this.keymap = keymap;
+        this.keysPressed = new Set();
+        this.document = document;
+    }
+    
+    function update(e) {
+        if (e.type == "keydown") {
+            this.keysPressed.add(e.keyCode);
+        }
+        if (e.type == "keyup") {
+            this.keysPressed.delete(e.keyCode);
+        }
+    }
+    
+    // check that keys pressed are highlighted in the html document correctly
+    function test() {
+        keysPressed.forEach(function(keyCode) {
+            assert.isTrue(this.testKey(keyCode, "next1");
+        }
+        //this.document.getElementById('jkeyshiftd').className
+    }
+    
+    // returns true if key is highlighted
+    function testKey(keyCode, htmlClass) {
+        if (this.document.getElementById(keymap()))
+    }
+    
+
+
 describe('keyPressed function', function() {
-    before(function () {
+    before(function() {
         this.jsdom = require('jsdom-global')();
         $ = require("jquery");
+        this.keyboard = new Keyboard(Typer.THE_LAYOUT, $);
         globals();
     });
 
-    after(function () {
+    after(function() {
         this.jsdom();
     });
 
     it('should load the spanish layout', function() {
-        assert.equal(Typer.THE_LAYOUT, "Spanish(V3)");	
+        assert.equal(Typer.THE_LAYOUT, "Spanish(V3)");
     });
 
     it('should finish exercise if all keys typed correctly', function() {
         testconfig("aeiou");
 
-	// simulate pressing "aeiou" keys in sequence.
+        // simulate pressing "aeiou" keys in sequence.
         var events = [].concat(k.a, k.e, k.i, k.o, k.u);
 
-	assert.equal(Typer.ended, false);
+        assert.equal(Typer.ended, false);
 
-	events.forEach(function(e) {
+        events.forEach(function(e) {
+            keyboard.update(e);
+            keyboard.test();
+         // TODO: check that the next key is colored correctly.
             keyPressed(e);
         });
 
-	// NOTE: Apparently currentPos doesn't increment in the last character!
-	// that's why we check against 4 (5-1) characters
-	assert.equal(Typer.currentPos, 4);
+        // NOTE: Apparently currentPos doesn't increment in the last character!
+        // that's why we check against 4 (5-1) characters
+        assert.equal(Typer.currentPos, 4);
 
-	assert.equal(Typer.ended, true);
-  });
+        assert.equal(Typer.ended, true);
+    });
 });
-
-
 
 // global import helper
 function globals() {
@@ -106,7 +138,7 @@ function globals() {
     global.izracunajHitrost = Typer.izracunajHitrost;
     global.izracunajTocnost = Typer.izracunajTocnost;
     global.updTimeSpeed = Typer.updTimeSpeed;
-    
+
     // layout functions
     global.keyupCombined = Typer.keyupCombined;
     global.keyupFirst = Typer.keyupFirst;
