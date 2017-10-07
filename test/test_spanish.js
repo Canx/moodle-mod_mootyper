@@ -11,7 +11,7 @@ const fs = require("fs");
 chai.use(sinonChai);
 
 Spanish = require("./fixtures/spanish.js");
-k = Spanish.keyslinux;
+k = Spanish.keyswindows;
 
 Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
