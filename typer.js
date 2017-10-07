@@ -1,4 +1,4 @@
-// keyupCombined and keyupFirst functions are defined in specific layouts.
+// Functions keyupCombined and keyupFirst are defined in specific layouts.
 // TODO: create an abstract layout class and make real layouts inherit from it.
 var keyupCombined, keyupFirst;
 
@@ -7,22 +7,22 @@ var keyupCombined, keyupFirst;
 var THE_LAYOUT;
 
 // TODO: this Typer object should contain below functions as methods.
-Typer = {
-    startTime : null,
-    endTime : null,
-    mistakes : null,
-    started : false,
-    ended : false,
-    intervalID : -1,
-    interval2ID : -1,
-    appUrl : null,
-    showKeyboard : true,
-    continuousType : false,
-    countMistypedSpaces : false,
-    currentPos : 0,
-    currentChar : null,
-    fullText : null
-}
+var Typer = {
+    startTime: null,
+    endTime: null,
+    mistakes: null,
+    started: false,
+    ended: false,
+    intervalID: -1,
+    interval2ID: -1,
+    appUrl: null,
+    showKeyboard: true,
+    continuousType: false,
+    countMistypedSpaces: false,
+    currentPos: 0,
+    currentChar: null,
+    fullText: null
+};
 
 /**
  * If not the end of fullText, move cursor to next character.
