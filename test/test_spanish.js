@@ -11,7 +11,6 @@ const fs = require("fs");
 chai.use(sinonChai);
 
 Spanish = require("./fixtures/spanish.js");
-k = Spanish.keyslinux;
 
 Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
@@ -85,13 +84,12 @@ describe('keyPressed function', function() {
         assert.equal(Typer.THE_LAYOUT, "Spanish(V3)");
     });
 
-    it('should check exercise \'aeiou\'', function() {
-        testConfig("aeiou");
+    it('should check exercise \'aeiou\' in Linux', function() {
         var keyboard = new KeyboardTester(Spanish.keymap, $);
-
-        // simulate pressing "aeiou" keys in sequence.
+    	var k = Spanish.keyslinux;
         var events = [].concat(k.a, k.e, k.i, k.o, k.u);
 
+        testConfig("aeiou");
         assert.equal(Typer.ended, false);
 
         events.forEach(function(e) {
@@ -109,11 +107,31 @@ describe('keyPressed function', function() {
         assert.equal(Typer.ended, true);
     });
     
-    it('should check exercise \'áéíóú\'', function() {
-    	testConfig("áéíóú");
+    it('should check exercise \'áéíóú\' in Windows', function() {
     	var keyboard = new KeyboardTester(Spanish.keymap, $);
+    	var k = Spanish.keyswindows;
     	var events = [].concat(k.á, k.é, k.í, k.ó, k.ú);
     	
+    	testConfig("áéíóú");
+    	assert.equal(Typer.ended, false);
+    	
+    	events.forEach(function(e) {
+    		keyboard.update(e);
+    		keyboard.testHighlight();
+    		keyPressed(e);
+    	});
+    	
+    	assert.equal(Typer.currentPos, 4);
+		assert.equal(Typer.ended, true);
+    	
+    });
+    
+    it('should check exercise \'áéíóú\' in Linux', function() {
+    	var keyboard = new KeyboardTester(Spanish.keymap, $);
+    	var k = Spanish.keyslinux;
+    	var events = [].concat(k.á, k.é, k.í, k.ó, k.ú);
+    	
+    	testConfig("áéíóú");
     	assert.equal(Typer.ended, false);
     	
     	events.forEach(function(e) {
