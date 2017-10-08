@@ -1,5 +1,6 @@
 // key numbers to key id's
-const keymap = [ "", // [0]
+const keymap = [ 
+{ name: "jkeyrighttick", finger: "4"}, // [0] Not sure if this is right, it could be other key...
 "", // [1]
 "", // [2]
 "", // [3]
@@ -560,8 +561,115 @@ var keyEventsWindows = {
 			which : 65,
 			charCode : 0,
 			type : "keyup"
-		}
-	]
+		} ],
+		
+		é: [ {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keyup"
+		}, {
+			keyCode : 69,
+			which : 69,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 233,
+			charCode : 233,
+			type : "keypress"
+		}, {
+			keyCode : 69,
+			which : 69,
+			charCode : 0,
+			type : "keyup"
+		} ],
+		
+		í: [ {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keyup"
+		}, {
+			keyCode : 73,
+			which : 73,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 237,
+			charCode : 237,
+			type : "keypress"
+		}, {
+			keyCode : 73,
+			which : 73,
+			charCode : 0,
+			type : "keyup"
+		} ],
+		
+		ó: [ {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keyup"
+		}, {
+			keyCode : 79,
+			which : 79,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 243,
+			charCode : 243,
+			type : "keypress"
+		}, {
+			keyCode : 79,
+			which : 79,
+			charCode : 0,
+			type : "keyup"
+		} ],
+		
+		ú: [ {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 0,
+			charCode : 0,
+			type : "keyup"
+		}, {
+			keyCode : 85,
+			which : 85,
+			charCode : 0,
+			type : "keydown"
+		}, {
+			keyCode : 0,
+			which : 250,
+			charCode : 250,
+			type : "keypress"
+		}, {
+			keyCode : 85,
+			which : 85,
+			charCode : 0,
+			type : "keyup"
+		} ],
 		
 }
 
