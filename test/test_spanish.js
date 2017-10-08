@@ -17,7 +17,8 @@ Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
 fixtures = {
-    "aeiou" : "test/fixtures/spanish.html"
+    "aeiou" : "test/fixtures/spanish.html",
+    "áéíóú" : "test/fixtures/spanish.html"
 };
 
 function testConfig(text) {
@@ -31,6 +32,7 @@ function testConfig(text) {
     document.body.innerHTML = fs.readFileSync(fixtures[text]);
     global.focusSet();
 }
+
 
 // class used to test DOM keyboard status
 class KeyboardTester {
@@ -60,6 +62,7 @@ class KeyboardTester {
     // returns true if key is next key highlighted
     testKeyHighlighted(keyCode) {
         var key = this.keymap[keyCode];
+        console.log(keyCode);
         var htmlElement = this.$("#" + key.name).get(0);
         var nextClass = "next" + key.finger;
         var msg = "key " + key.name + "("+ keyCode + ") is class:" + htmlElement.className + ", not class:" + nextClass;
@@ -105,6 +108,25 @@ describe('keyPressed function', function() {
 
         assert.equal(Typer.ended, true);
     });
+    
+    it('should check exercise \'áéíóú\'', function() {
+    	testConfig("áéíóú");
+    	var keyboard = new KeyboardTester(Spanish.keymap, $);
+    	var events = [].concat(k.á, k.é, k.í, k.ó, k.ú);
+    	
+    	assert.equal(Typer.ended, false);
+    	
+    	events.forEach(function(e) {
+    		keyboard.update(e);
+    		keyboard.testHighlight();
+    		keyPressed(e);
+    	});
+    	
+    	assert.equal(Typer.currentPos, 4);
+		assert.equal(Typer.ended, true);
+    	
+    });
+    
 });
 
 // global import helper
