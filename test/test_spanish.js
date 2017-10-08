@@ -16,8 +16,8 @@ Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
 fixtures = {
-    "aeiou" : "test/fixtures/spanish.html",
-    "áéíóú" : "test/fixtures/spanish.html"
+    "aeiou" : "test/fixtures/spanish_aeiou.html",
+    "áéíóú" : "test/fixtures/spanish_áéíóú.html"
 };
 
 function testConfig(text) {
