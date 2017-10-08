@@ -60,9 +60,10 @@ class KeyboardTester {
     
     // returns true if key is next key highlighted
     testKeyHighlighted(keyCode) {
-        var key = this.keymap[keyCode];
-        console.log(keyCode);
-        var htmlElement = this.$("#" + key.name).get(0);
+    	var key = this.keymap[keyCode];
+    	assert.ok(typeof(key.name) !== 'undefined', 'no keymap entry found for code ' + keyCode);
+    	var htmlElement = this.$("#" + key.name).get(0);
+    	assert.ok(typeof(htmlElement) !== 'undefined', "no html element found for " + key.name);
         var nextClass = "next" + key.finger;
         var msg = "key " + key.name + "("+ keyCode + ") is class:" + htmlElement.className + ", not class:" + nextClass;
         assert.ok(htmlElement.className == nextClass, msg);
