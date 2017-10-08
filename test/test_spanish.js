@@ -20,19 +20,6 @@ fixtures = {
     "áéíóú" : "test/fixtures/spanish_áéíóú.html"
 };
 
-function testConfig(text) {
-    global.countMistypedSpaces = false;
-    global.continuousType = false;
-    global.Typer.started = false;
-    global.Typer.ended = false;
-    global.currentPos = 0;
-    global.Typer.fullText = text;
-    global.Typer.currentChar = Typer.fullText.charAt(currentPos);
-    document.body.innerHTML = fs.readFileSync(fixtures[text]);
-    global.focusSet();
-}
-
-
 // class used to test DOM keyboard status
 class KeyboardTester {
     constructor(keymap, $) {
@@ -50,6 +37,37 @@ class KeyboardTester {
         }
     }
     
+    config(text) {
+    	global.countMistypedSpaces = false;
+        global.continuousType = false;
+        global.Typer.started = false;
+        global.Typer.ended = false;
+        global.currentPos = 0;
+        global.Typer.fullText = text;
+        global.Typer.currentChar = Typer.fullText.charAt(currentPos);
+        document.body.innerHTML = fs.readFileSync(fixtures[text]);
+        global.focusSet();
+    }
+    
+    test(keys, text) {
+    	var self = this;
+    	this.config(text);
+        assert.equal(Typer.ended, false);
+    	
+    	keys.forEach(function(key) {
+        	var savedPos = Typer.currentPos;
+        	
+        	key.forEach(function(event) {
+        		self.update(event);
+        		self.testHighlight();
+        		keyPressed(event);
+        	});
+        	
+        	assert.ok(Typer.currentPos == (savedPos + 1), "Position did not increment at: " + Typer.currentPos);
+        });
+        
+    	assert.equal(Typer.ended, true);
+    }
     // check that keys pressed are highlighted in the html document correctly
     testHighlight() {
         var self = this;
@@ -84,68 +102,37 @@ describe('keyPressed function', function() {
     it('should load the spanish layout', function() {
         assert.equal(Typer.THE_LAYOUT, "Spanish(V3)");
     });
-
+    
+    
+    // FIX: not passing
     it('should check exercise \'aeiou\' in Linux', function() {
         var keyboard = new KeyboardTester(Spanish.keymap, $);
     	var k = Spanish.keyslinux;
-        var events = [].concat(k.a, k.e, k.i, k.o, k.u);
+        var keys = [k.a, k.e, k.i, k.o, k.u];
+        var text = "aeiou";
+        
+        keyboard.test(keys, text);
 
-        testConfig("aeiou");
-        assert.equal(Typer.ended, false);
-
-        events.forEach(function(e) {
-            // check that next keys are colored correctly before keyPressed
-            keyboard.update(e);
-            keyboard.testHighlight();
-
-            keyPressed(e);
-        });
-
-        // NOTE: Apparently currentPos doesn't increment in the last character!
-        // that's why we check against 4 (5-1) characters
-        assert.equal(Typer.currentPos, 4);
-
-        assert.equal(Typer.ended, true);
     });
     
+    // FIX: not passing.
     it('should check exercise \'áéíóú\' in Windows', function() {
     	var keyboard = new KeyboardTester(Spanish.keymap, $);
     	var k = Spanish.keyswindows;
-    	var events = [].concat(k.á, k.é, k.í, k.ó, k.ú);
+    	var keys = [k.á, k.é, k.í, k.ó, k.ú];
+    	var text = "áéíóú";
     	
-    	testConfig("áéíóú");
-    	assert.equal(Typer.ended, false);
-    	
-    	events.forEach(function(e) {
-    		keyboard.update(e);
-    		keyboard.testHighlight();
-    		keyPressed(e);
-    	});
-    	
-    	assert.equal(Typer.currentPos, 4);
-		assert.equal(Typer.ended, true);
-    	
+    	keyboard.test(keys, text);
     });
     
     it('should check exercise \'áéíóú\' in Linux', function() {
     	var keyboard = new KeyboardTester(Spanish.keymap, $);
     	var k = Spanish.keyslinux;
-    	var events = [].concat(k.á, k.é, k.í, k.ó, k.ú);
+    	var keys = [k.á, k.é, k.í, k.ó, k.ú];
+    	var text = "áéíóú";
     	
-    	testConfig("áéíóú");
-    	assert.equal(Typer.ended, false);
-    	
-    	events.forEach(function(e) {
-    		keyboard.update(e);
-    		keyboard.testHighlight();
-    		keyPressed(e);
-    	});
-    	
-    	assert.equal(Typer.currentPos, 4);
-		assert.equal(Typer.ended, true);
-    	
+    	keyboard.test(keys, text);
     });
-    
 });
 
 // global import helper
