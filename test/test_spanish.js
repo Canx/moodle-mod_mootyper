@@ -3,15 +3,9 @@
 global.isNode = require('detect-node');
 const util = require('util')
 const assert = require('assert');
-const sinon = require("sinon");
-const chai = require("chai");
-const sinonChai = require("sinon-chai");
 const fs = require("fs");
 
-chai.use(sinonChai);
-
 Spanish = require("./fixtures/spanish.js");
-
 Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
