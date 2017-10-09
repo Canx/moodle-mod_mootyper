@@ -45,6 +45,8 @@ function moveCursor(nextPos) {
  *
  */
 function doTheEnd() {
+    Typer.currentPos++;
+    updTimeSpeed();
     $('#crka' + (Typer.fullText.length - 1)).addClass('txtGreen');
     $('#crka' + (Typer.fullText.length - 1)).removeClass('txtBlue');
     $('#crka' + (Typer.fullText.length - 1)).removeClass('txtRed');
