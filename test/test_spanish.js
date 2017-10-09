@@ -32,19 +32,21 @@ class KeyboardTester {
     }
     
     config(text) {
-    	global.countMistypedSpaces = false;
-        global.continuousType = false;
+    	global.Typer.countMistypedSpaces = false;
+        global.Typer.continuousType = false;
         global.Typer.started = false;
         global.Typer.ended = false;
-        global.currentPos = 0;
+        global.Typer.currentPos = 0;
         global.Typer.fullText = text;
-        global.Typer.currentChar = Typer.fullText.charAt(currentPos);
+        global.Typer.currentChar = Typer.fullText.charAt(Typer.currentPos);
         document.body.innerHTML = fs.readFileSync(fixtures[text]);
         global.focusSet();
+        
     }
     
     test(keys, text) {
     	var self = this;
+    	
     	this.config(text);
         assert.equal(Typer.ended, false);
     	
@@ -97,8 +99,6 @@ describe('keyPressed function', function() {
         assert.equal(Typer.THE_LAYOUT, "Spanish(V3)");
     });
     
-    
-    // FIX: not passing
     it('should check exercise \'aeiou\' in Linux', function() {
         var keyboard = new KeyboardTester(Spanish.keymap, $);
     	var k = Spanish.keyslinux;
@@ -109,7 +109,6 @@ describe('keyPressed function', function() {
 
     });
     
-    // FIX: not passing.
     it('should check exercise \'áéíóú\' in Windows', function() {
     	var keyboard = new KeyboardTester(Spanish.keymap, $);
     	var k = Spanish.keyswindows;
@@ -119,6 +118,7 @@ describe('keyPressed function', function() {
     	keyboard.test(keys, text);
     });
     
+    // FIX: not passing.
     it('should check exercise \'áéíóú\' in Linux', function() {
     	var keyboard = new KeyboardTester(Spanish.keymap, $);
     	var k = Spanish.keyslinux;
