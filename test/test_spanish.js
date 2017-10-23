@@ -5,14 +5,19 @@ const util = require('util')
 const assert = require('assert');
 const fs = require("fs");
 
+let jQuery = require('jquery');
+
+
 Spanish = require("./fixtures/spanish.js");
 Layout = require("../layouts/Spanish(V3).js");
 Typer = require("../typer.js");
 
 fixtures = {
     "aeiou" : "test/fixtures/spanish_aeiou.html",
+    "AEIOU" : "test/fixtures/spanish_aeiou.html",
     "áéíóú" : "test/fixtures/spanish_áéíóú.html"
 };
+
 
 // class used to test DOM keyboard status
 class KeyboardTester {
@@ -31,7 +36,24 @@ class KeyboardTester {
         }
     }
     
+    addJquerylistHandler() {
+	    this.$.fn.listHandlers = function(events, outputFunction) {
+	        return this.each(function(i){
+	            var elem = this,
+	                dEvents = $(this).data('events');
+	            if (!dEvents) {return;}
+	            $.each(dEvents, function(name, handler){
+	                if((new RegExp('^(' + (events === '*' ? '.+' : events.replace(',','|').replace(/^on/i,'')) + ')$' ,'i')).test(name)) {
+	                   $.each(handler, function(i,handler){
+	                       outputFunction(elem, 'n' + i + ': [' + name + '] : ' + handler );
+	                   });
+	               }
+	            });
+	        });
+	    };
+    }
     config(text) {
+    	//global.$ = this.$;
     	global.Typer.countMistypedSpaces = false;
         global.Typer.continuousType = false;
         global.Typer.started = false;
@@ -40,7 +62,11 @@ class KeyboardTester {
         global.Typer.fullText = text;
         global.Typer.currentChar = Typer.fullText.charAt(Typer.currentPos);
         document.body.innerHTML = fs.readFileSync(fixtures[text]);
+        //configthis.addJquerylistHandler();
+        global.inittexttoenter(text, 0, 0, 0, 0, 0, "", true, false, false);
+        //$("#form1").on("keypress", "#tb1", keyPressed);
         global.focusSet();
+
         
     }
     
@@ -56,13 +82,24 @@ class KeyboardTester {
         	key.forEach(function(event) {
         		self.update(event);
         		self.testHighlight();
-        		keyPressed(event);
+        		
+        		self.trigger(event);
+        		
         	});
         	
         	assert.ok(Typer.currentPos == (savedPos + 1), "Position did not increment at: " + Typer.currentPos);
         });
         
     	assert.equal(Typer.ended, true);
+    }
+    
+    trigger(event) {
+	let e = $.Event(event.type);
+        e.which = event.which;
+	e.keyCode = event.keyCode;
+	
+	let tag = document.getElementById("tb1");
+    	$(tag).trigger(e);
     }
     // check that keys pressed are highlighted in the html document correctly
     testHighlight() {
@@ -86,8 +123,9 @@ class KeyboardTester {
 
 describe('keyPressed function', function() {
     before(function() {
-        this.jsdom = require('jsdom-global')();
-        $ = require("jquery");
+    	this.jsdom = require('jsdom-global')();
+    	let $ =jQuery(window);
+    	global.$ = $;
         globals();
     });
 
@@ -108,7 +146,18 @@ describe('keyPressed function', function() {
         keyboard.test(keys, text);
 
     });
-    
+
+    it('should check exercice \'AEIOU\' in Linux', function() {
+        var keyboard = new KeyboardTester(Spanish.keymap, $);
+    	var k = Spanish.keyslinux;
+        var keys = [k.A, k.E, k.I, k.O, k.U];
+	    
+        var text = "AEIOU";
+        
+        keyboard.test(keys, text);
+    });
+
+
     it('should check exercise \'áéíóú\' in Windows', function() {
     	var keyboard = new KeyboardTester(Spanish.keymap, $);
     	var k = Spanish.keyswindows;
@@ -138,7 +187,7 @@ function globals() {
     global.thenFinger = Layout.thenFinger;
     global.getKeyID = Layout.getKeyID;
     global.isLetter = Layout.isLetter;
-
+    
     global.moveCursor = Typer.moveCursor;
     global.doTheEnd = Typer.doTheEnd;
     global.getPressedChar = Typer.getPressedChar;
