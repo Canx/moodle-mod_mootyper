@@ -346,6 +346,114 @@ const keyEventsLinux = {
         charCode : 0,
         type : "keyup"
     } ],
+    
+    E : [ {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 69,
+        which : 69,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 69,
+        which : 69,
+        charCode : 69,
+        type : "keypress"
+    }, {
+        keyCode : 69,
+        which : 69,
+        charCode : 0,
+        type : "keyup"
+    }, {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keyup"
+    } ],
+    
+    I : [ {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 73,
+        which : 73,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 73,
+        which : 73,
+        charCode : 73,
+        type : "keypress"
+    }, {
+        keyCode : 73,
+        which : 73,
+        charCode : 0,
+        type : "keyup"
+    }, {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keyup"
+    } ],
+    
+    O : [ {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 79,
+        which : 79,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 79,
+        which : 79,
+        charCode : 79,
+        type : "keypress"
+    }, {
+        keyCode : 79,
+        which : 79,
+        charCode : 0,
+        type : "keyup"
+    }, {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keyup"
+    } ],
+    
+    U : [ {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 85,
+        which : 85,
+        charCode : 0,
+        type : "keydown"
+    }, {
+        keyCode : 85,
+        which : 85,
+        charCode : 85,
+        type : "keypress"
+    }, {
+        keyCode : 85,
+        which : 85,
+        charCode : 0,
+        type : "keyup"
+    }, {
+        keyCode : 16,
+        which : 16,
+        charCode : 0,
+        type : "keyup"
+    } ],
 
     á : [ {
         keyCode : 222,

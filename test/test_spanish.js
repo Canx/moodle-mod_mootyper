@@ -78,11 +78,14 @@ class KeyboardTester {
     	
     	keys.forEach(function(key) {
         	var savedPos = Typer.currentPos;
-        	
-        	key.forEach(function(event) {
+        	assert.notEqual(key, undefined, "undefined key at position " + Typer.currentPos );
+        	key.forEach(function(event, index, events) {
         		self.update(event);
-        		self.testHighlight();
         		
+        		// we only check when new keys are pressed
+        		if (event.type == "keydown") {
+        	        self.testHighlight();
+        	    }
         		self.trigger(event);
         		
         	});
@@ -104,19 +107,21 @@ class KeyboardTester {
     // check that keys pressed are highlighted in the html document correctly
     testHighlight() {
         var self = this;
-        this.keysPressed.forEach(function(keyCode) {
-            self.testKeyHighlighted(keyCode);
+        this.keysPressed.forEach(function(keyCode, index, keys) {
+            self.testKeyHighlighted(keyCode, keys);
         });
     }
     
     // returns true if key is next key highlighted
-    testKeyHighlighted(keyCode) {
+    testKeyHighlighted(keyCode, keys) {
     	var key = this.keymap[keyCode];
     	assert.ok(typeof(key.name) !== 'undefined', 'no keymap entry found for code ' + keyCode);
     	var htmlElement = this.$("#" + key.name).get(0);
     	assert.ok(typeof(htmlElement) !== 'undefined', "no html element found for " + key.name);
         var nextClass = "next" + key.finger;
         var msg = "key " + key.name + "("+ keyCode + ") is class:" + htmlElement.className + ", not class:" + nextClass;
+        var msg = msg + ", at position " + Typer.currentPos;
+        var msg = msg + ", keys pressed: " + JSON.stringify(keys);
         assert.ok(htmlElement.className == nextClass, msg);
     }
 }
