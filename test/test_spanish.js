@@ -172,6 +172,10 @@ describe('keyPressed function', function() {
     	keyboard.test(keys, text);
     });
     
+    // TODO
+    //it('should check exercise \|@#~€¬[]↓{} in Windows', function() {
+    //}
+    
     // FIX: not passing.
     it('should check exercise \'áéíóú\' in Linux', function() {
     	var keyboard = new KeyboardTester(Spanish.keymap, $);
