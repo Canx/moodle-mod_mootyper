@@ -1,5 +1,5 @@
 
-# Moodle Mootyper module
+# Moodle Mootyper module ![Travis branch](https://api.travis-ci.org/Canx/moodle-mod_mootyper.svg?branch=test)
 - Moodle tracker component: https://github.com/drachels/moodle-mod_mootyper/issues
 - Documentation: https://github.com/drachels/moodle-mod_mootyper/wiki
 - Source Code: https://github.com/drachels/moodle-mod_mootyper
