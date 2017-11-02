@@ -1,9 +1,27 @@
+var THE_LAYOUT,
+    ended = false,
+    started = false,
+    doStart,
+    getPressedChar,
+    combinedChar,
+    combinedCharWait,
+    $,
+    currentChar,
+    show_keyboard,
+    currentPos,
+    fullText,
+    doKonec,
+    moveCursor,
+    napake,
+    keyupFirst,
+    event;
+
 /**
  * Check for combined character.
- *
+ * @param char chr.
+ * @returns char.
  */
 function isCombined(chr) {
-//    return (chr === '´' || chr === '`');
     return false;
 }
 
@@ -12,6 +30,8 @@ THE_LAYOUT = 'Spanish(V3)';
 /**
  * Process keyup for combined character.
  *
+ * @param char e.
+ * @returns bolean.
  */
 function keyupCombined(e) {
     if (Typer.ended) {
@@ -68,15 +88,18 @@ function keyupCombined(e) {
 /**
  * Process keyupFirst.
  *
+ * @param char event.
+ * @returns bolean.
  */
 function keyupFirst(event) {
     $("#form1").off("keyup", "#tb1", keyupFirst);
     $("#form1").on("keyup", "#tb1", keyupCombined);
     return false;
 }
+
 /**
  * Check for character typed so flags can be set.
- *
+ * @param char ltr.
  */
 function keyboardElement(ltr) {
     this.chr = ltr.toLowerCase();
@@ -173,19 +196,19 @@ function keyboardElement(ltr) {
  * Set color flag based on current character.
  *
  */
-function thenFinger(t_Crka) {
-    if (t_Crka === ' ') {
+function thenFinger(tCrka) {
+    if (tCrka === ' ') {
         return 5; // Highlight the spacebar.
     // @codingStandardsIgnoreLine
-    } else if (t_Crka.match(/[ºª\\1!|qaáz<>0=pñ\'?`^\[´¨{\-_¡¿+*\]ç}]/i)) {
+    } else if (tCrka.match(/[ºª\\1!|qaáz<>0=pñ\'?`^\[´¨{\-_¡¿+*\]ç}]/i)) {
         return 4; // Highlight the correct key above in red.
     // @codingStandardsIgnoreLine
-    } else if (t_Crka.match(/[2"@wsx9)oól.:]/i)) {
+    } else if (tCrka.match(/[2"@wsx9)oól.:]/i)) {
         return 3; // Highlight the correct key above in green.
     // @codingStandardsIgnoreLine
-    } else if (t_Crka.match(/[3·#eé€dc8(iík,;]/i)) {
+    } else if (tCrka.match(/[3·#eé€dc8(iík,;]/i)) {
         return 2; // Highlight the correct key above in yellow.    // @codingStandardsIgnoreLine
-    } else if (t_Crka.match(/[4$~rf5%€tgv6&¬yhnb7/uúüjm]/i)) {
+    } else if (tCrka.match(/[4$~rf5%€tgv6&¬yhnb7/uúüjm]/i)) {
         return 1; // Highlight the correct key above in blue.
     } else {
         return 6; // Do not change any highlight.
@@ -195,72 +218,76 @@ function thenFinger(t_Crka) {
 /**
  * Get ID of key to highlight based on current character.
  *
+ * @param char tCrka.
+ * @returns varchar.
  */
-function getKeyID(t_Crka) {
-    if (t_Crka === ' ') {
+function getKeyID(tCrka) {
+    if (tCrka === ' ') {
         return "jkeyspace";
-    } else if (t_Crka === ',' || t_Crka === ';') {
+    } else if (tCrka === ',' || tCrka === ';') {
         return "jkeycomma";
-    } else if (t_Crka === '\n') {
+    } else if (tCrka === '\n') {
         return "jkeyenter";
-    } else if (t_Crka === '.' || t_Crka === ':') {
+    } else if (tCrka === '.' || tCrka === ':') {
         return "jkeyperiod";
-    } else if (t_Crka === '-' || t_Crka === '_') {
+    } else if (tCrka === '-' || tCrka === '_') {
         return "jkeyminus";
-    } else if (t_Crka === '!' || t_Crka === '|') {
+    } else if (tCrka === '!' || tCrka === '|') {
         return "jkey1";
-    } else if (t_Crka === '"' || t_Crka === '@') {
+    } else if (tCrka === '"' || tCrka === '@') {
         return "jkey2";
-    } else if (t_Crka === '·' || t_Crka === '#') {
+    } else if (tCrka === '·' || tCrka === '#') {
         return "jkey3";
-    } else if (t_Crka === '$'|| t_Crka === '~') {
+    } else if (tCrka === '$'|| tCrka === '~') {
         return "jkey4";
-    } else if (t_Crka === '%') {
+    } else if (tCrka === '%') {
         return "jkey5";
-    } else if (t_Crka === '&' || t_Crka === '¬') {
+    } else if (tCrka === '&' || tCrka === '¬') {
         return "jkey6";
-    } else if (t_Crka === '/') {
+    } else if (tCrka === '/') {
         return "jkey7";
-    } else if (t_Crka === '(') {
+    } else if (tCrka === '(') {
         return "jkey8";
-    } else if (t_Crka === ')') {
+    } else if (tCrka === ')') {
         return "jkey9";
-    } else if (t_Crka === '=') {
+    } else if (tCrka === '=') {
         return "jkey0";
-    } else if (t_Crka === '`' || t_Crka === '^' || t_Crka === '[') {
+    } else if (tCrka === '`' || tCrka === '^' || tCrka === '[') {
         return "jkeylefttick";
-    } else if (t_Crka === '´' || t_Crka === '¨' || t_Crka === '{') {
+    } else if (tCrka === '´' || tCrka === '¨' || tCrka === '{') {
         return "jkeyrighttick";
-    } else if (t_Crka === 'ç' || t_Crka === '}') {
+    } else if (tCrka === 'ç' || tCrka === '}') {
         return "jkeyç";
-    } else if (t_Crka === "'" || t_Crka === '?') {
+    } else if (tCrka === "'" || tCrka === '?') {
         return "jkeyapostrophe";
-    } else if (t_Crka === '*' || t_Crka === '+' || t_Crka === ']') {
+    } else if (tCrka === '*' || tCrka === '+' || tCrka === ']') {
         return "jkeyplus";
-    } else if (t_Crka === '<' || t_Crka === '>') {
+    } else if (tCrka === '<' || tCrka === '>') {
         return "jkeyckck";
-    } else if (t_Crka === 'º' || t_Crka === 'ª' || t_Crka === '\\') {
+    } else if (tCrka === 'º' || tCrka === 'ª' || tCrka === '\\') {
         return "jkeytilde";
-    } else if (t_Crka === '¿') {
+    } else if (tCrka === '¿') {
         return 'jkey¡';
-    } else if (t_Crka === 'a' || t_Crka === 'á') {
+    } else if (tCrka === 'a' || tCrka === 'á') {
         return "jkeya";
-    } else if (t_Crka === 'e' || t_Crka === 'é' || t_Crka === '€') {
+    } else if (tCrka === 'e' || tCrka === 'é' || tCrka === '€') {
         return "jkeye";
-    } else if (t_Crka === 'i' || t_Crka === 'í') {
+    } else if (tCrka === 'i' || tCrka === 'í') {
         return "jkeyi";
-    } else if (t_Crka === 'o' || t_Crka === 'ó') {
+    } else if (tCrka === 'o' || tCrka === 'ó') {
         return "jkeyo";
-    } else if (t_Crka === 'u' || t_Crka === 'ú' || t_Crka === 'ü') {
+    } else if (tCrka === 'u' || tCrka === 'ú' || tCrka === 'ü') {
         return "jkeyu";
     } else {
-        return "jkey" + t_Crka;
+        return "jkey" + tCrka;
     }
 }
 
 /**
  * Is the typed letter part of the current alphabet.
  *
+ * @param int str.
+ * @returns int && bolean.
  */
 function isLetter(str) {
     return str.length === 1 && str.match(/[a-z`¡ñçáéíóúü]/i);

@@ -26,7 +26,7 @@ var Typer = {
 
 /**
  * If not the end of fullText, move cursor to next character.
- * 
+ *
  */
 function moveCursor(nextPos) {
 	if (nextPos > 0 && nextPos <= Typer.fullText.length) {
@@ -41,7 +41,7 @@ function moveCursor(nextPos) {
 
 /**
  * End of typing.
- * 
+ *
  */
 function doTheEnd() {
 	Typer.currentPos++;
@@ -69,6 +69,9 @@ function doTheEnd() {
 	$('#btnContinue').css('visibility', 'visible');
 	var wpm = (speed / 5) - Typer.mistakes;
 	$('#jsWpm').html(wpm.toFixed(2));
+
+  var rpAttId = $('input[name="rpAttId"]').val();
+
 	var juri = Typer.appUrl + "/mod/mootyper/atchk.php?status=3&attemptid="
 			+ $('input[name="rpAttId"]').val();
 	$.get(juri, function(data) {
@@ -77,7 +80,7 @@ function doTheEnd() {
 
 /**
  * Get the character for the pressed key depending on current keyboard driver.
- * 
+ *
  */
 function getPressedChar(e) {
 	var keynum;
@@ -103,7 +106,7 @@ function getPressedChar(e) {
 
 /**
  * Set the focus.
- * 
+ *
  */
 function focusSet(e) {
 	if (!Typer.started) {
@@ -121,7 +124,7 @@ function focusSet(e) {
 
 /**
  * Do checks.
- * 
+ *
  */
 function doCheck() {
 	var rpMootyperId = $('input[name="rpSityperId"]').val();
@@ -136,7 +139,7 @@ function doCheck() {
 
 /**
  * Start exercise and reset data variables.
- * 
+ *
  */
 function doStart() {
 	Typer.startTime = new Date();
@@ -158,7 +161,7 @@ function doStart() {
 
 /**
  * Process current key press and proceed based on typing mode.
- * 
+ *
  */
 function keyPressed(e) {
 	if (Typer.ended) {
@@ -239,7 +242,7 @@ function keyPressed(e) {
 
 /**
  * Calculate time to seconds.
- * 
+ *
  */
 function dobiSekunde(hrs, mins, seccs) {
 	if (hrs > 0) {
@@ -254,7 +257,7 @@ function dobiSekunde(hrs, mins, seccs) {
 
 /**
  * Calculate date difference.
- * 
+ *
  */
 function timeDifference(t1, t2) {
 	var yrs = t1.getFullYear();
@@ -274,7 +277,7 @@ function timeDifference(t1, t2) {
 
 /**
  * Initialize text to enter.
- * 
+ *
  */
 function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 		tattemptid, turl, tshowkeyboard, tcontinuoustype, tcountmistypedspaces) {
@@ -348,7 +351,7 @@ function inittexttoenter(ttext, tinprogress, tmistakes, thits, tstarttime,
 
 /**
  * Calculate speed.
- * 
+ *
  */
 function izracunajHitrost(sc) {
 	return (((Typer.currentPos + Typer.mistakes) * 60) / sc);
@@ -356,7 +359,7 @@ function izracunajHitrost(sc) {
 
 /**
  * Calculate accuracy.
- * 
+ *
  */
 function izracunajTocnost() {
 	if (Typer.currentPos + Typer.mistakes === 0) {
@@ -366,9 +369,8 @@ function izracunajTocnost() {
 }
 
 /**
- * Update current time, progress, mistakes presicsion, hits per minute, and
- * words per minute.
- * 
+ * Update current time, progress, mistakes presicsion, hits per minute, and words per minute.
+ *
  */
 function updTimeSpeed() {
 	newCas = new Date();
